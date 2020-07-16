@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: house-zookeeper
+  labels:
+    name: house-zookeeper
+spec:
+  type: NodePort
+  ports:
+  - port: 2181
+    targetPort: 2181
+    nodePort: 30081
+  selector:
+   app: zookeeper

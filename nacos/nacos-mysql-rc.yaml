@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: nacos-mysql
+spec:
+  replicas: 1
+  selector:
+    app: nacos-mysql
+  template:
+    metadata:
+      labels:
+        app: nacos-mysql
+    spec:
+      containers:
+      - name: mysql
+        image: nacos/nacos-mysql:5.7
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "root"
+        - name: MYSQL_DATABASE
+          value: "nacos_devtest"
+        - name: MYSQL_USER
+          value: "nacos"
+        - name: MYSQL_PASSWORD
+          value: "nacos"
+        volumeMounts:
+        - name: nacos-mysql-data
+          mountPath: "/var/lib/mysql"
+      volumes:
+      - name: nacos-mysql-data
+        persistentVolumeClaim:
+          claimName: nacos-mysql-pvc

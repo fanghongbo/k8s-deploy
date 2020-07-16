@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: rabbitmq
+spec:
+  replicas: 1
+  selector:
+    app: rabbitmq
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      containers:
+      - name: rabbitmq
+        image: rabbitmq:3-management
+        ports:
+        - name: port1
+          containerPort: 5671
+        - name: port2
+          containerPort: 5672
+        - name: manager
+          containerPort: 15672
+        volumeMounts:
+        - name: rabbitmq-data
+          mountPath: "/var/lib/rabbitmq"
+      volumes:
+      - name: rabbitmq-data
+        persistentVolumeClaim:
+          claimName: rabbitmq-pvc

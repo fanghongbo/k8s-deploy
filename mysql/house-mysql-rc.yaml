@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: house-mysql
+spec:
+  replicas: 1
+  selector:
+    app: house-mysql
+  template:
+    metadata:
+      labels:
+        app: house-mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "redhat"
+        volumeMounts:
+        - name: house-mysql-data
+          mountPath: "/var/lib/mysql"
+      volumes:
+      - name: house-mysql-data
+        persistentVolumeClaim:
+          claimName: house-mysql-pvc
